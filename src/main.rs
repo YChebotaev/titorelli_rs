@@ -6,7 +6,10 @@ use actix_web::{self, post, web, App, HttpResponse, HttpServer, Responder};
 use classification_example::ClassificationExample;
 use classification_result::ClassificationResult;
 use model::{ClassifiedType, ExampleType, Model};
-use std::sync::{Arc, Mutex};
+use std::{
+    env,
+    sync::{Arc, Mutex},
+};
 use train_example::TrainExample;
 
 struct AppState {
@@ -53,6 +56,11 @@ async fn train_bulk(
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    let port = env::var("PORT")
+        .unwrap_or("3000".into())
+        .parse::<u16>()
+        .unwrap_or(3000);
+    let addr = env::var("HOST").unwrap_or("127.0.0.1".into());
     let model = Arc::new(Mutex::new(Model::new()));
 
     HttpServer::new(move || {
@@ -65,7 +73,7 @@ async fn main() -> std::io::Result<()> {
             .service(classify)
             .service(train_bulk)
     })
-    .bind(("127.0.0.1", 3000))?
+    .bind((addr, port))?
     .run()
     .await
 }
