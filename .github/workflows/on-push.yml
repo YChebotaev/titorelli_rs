@@ -9,7 +9,7 @@ jobs:
       contents: read
     steps:
       - name: Check out the repo
-        uses: actions/checkout
+        uses: actions/checkout@latest
       - name: Log in to container registry
         uses: docker/login-action
         with:
@@ -18,11 +18,11 @@ jobs:
           password: ${{secrets.GITHUB_TOKEN}}
       - name: Extract metadata
         id: meta
-        uses: docker/metadata-action
+        uses: docker/metadata-action@latest
         with:
           images: ghcr.io/${{ github.repository }}
       - name: Build and push docker images
-        uses: docker/build-push-action
+        uses: docker/build-push-action@latest
         with:
           context: .
           push: true
