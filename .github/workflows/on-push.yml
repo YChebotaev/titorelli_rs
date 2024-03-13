@@ -1,0 +1,30 @@
+name: Push do ghcr
+on: [push]
+jobs:
+  build_and_push:
+    name: Build and push image to ghcr
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout
+      - name: Log in to container registry
+        uses: docker/login-action
+        with:
+          registry: hgcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action
+        with:
+          images: ghcr.io/${{ github.repository }}
+      - name: Build and push docker images
+        uses: docker/build-push-action
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
