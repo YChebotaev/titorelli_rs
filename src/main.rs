@@ -60,7 +60,7 @@ async fn main() -> std::io::Result<()> {
         .unwrap_or("3000".into())
         .parse::<u16>()
         .unwrap_or(3000);
-    let addr = env::var("HOST").unwrap_or("127.0.0.1".into());
+    let addr = env::var("HOST").unwrap_or("0.0.0.0".into());
     let model = Arc::new(Mutex::new(Model::new()));
 
     HttpServer::new(move || {
