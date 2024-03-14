@@ -13,7 +13,7 @@ jobs:
       - name: Log in to container registry
         uses: docker/login-action@v3
         with:
-          registry: hgcr.io
+          registry: ghcr.io
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
       - name: Extract metadata
