@@ -9,20 +9,20 @@ jobs:
       contents: read
     steps:
       - name: Check out the repo
-        uses: actions/checkout@latest
+        uses: actions/checkout@v4
       - name: Log in to container registry
-        uses: docker/login-action
+        uses: docker/login-action@v3
         with:
           registry: hgcr.io
           username: ${{github.actor}}
           password: ${{secrets.GITHUB_TOKEN}}
       - name: Extract metadata
         id: meta
-        uses: docker/metadata-action@latest
+        uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
       - name: Build and push docker images
-        uses: docker/build-push-action@latest
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
